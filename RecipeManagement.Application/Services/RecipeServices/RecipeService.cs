@@ -45,20 +45,18 @@ namespace RecipeManagement.Application.Services.RecipeServices
 
         public async Task<Recipe> Update(int id, RecipeDTO recipeDTO)
         {
-            var res = await _recipeRepository.GetByAny(x => x.Id == id);
+            var storedRecipe = await _recipeRepository.GetByAny(x => x.Id == id);
 
-            if (res != null)
+            if (storedRecipe != null)
             {
-                var recipe = new Recipe()
-                {
-                    Title = recipeDTO.Title,
-                    Ingredients = recipeDTO.Ingredients,
-                    Instructions = recipeDTO.Instructions,
-                    DifficultyLevel = recipeDTO.DifficultyLevel,
-                    Author = recipeDTO.Author,
-                    Rating = recipeDTO.Rating
-                };
-                var result = await _recipeRepository.Update(recipe);
+                storedRecipe.Title = recipeDTO.Title;
+                storedRecipe.Ingredients = recipeDTO.Ingredients;
+                storedRecipe.Instructions = recipeDTO.Instructions;
+                storedRecipe.DifficultyLevel = recipeDTO.DifficultyLevel;
+                storedRecipe.Author = recipeDTO.Author;
+                storedRecipe.Rating = recipeDTO.Rating;
+
+                var result = await _recipeRepository.Update(storedRecipe);
 
                 return result;
             }

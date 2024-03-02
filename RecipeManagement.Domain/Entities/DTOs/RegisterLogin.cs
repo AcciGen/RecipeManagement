@@ -17,6 +17,9 @@ namespace RecipeManagement.Domain.Entities.DTOs
         public required string Password { get; set; }
 
         [MinLength(8)]
-        public required string ConiformPassword { get; set; }
+        public required string ConfirmPassword { get; set; }
+
+        [MaxLength(20)]
+        public required string Role { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using RecipeManagement.Application.Abstractions.IServices;
 using RecipeManagement.Domain.Entities.DTOs;
+using RecipeManagement.Domain.Entities.Models;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -13,31 +14,36 @@ namespace RecipeManagement.Application.Services.AuthServices
     public class AuthService : IAuthService
     {
         private readonly IConfiguration _config;
-        private readonly IUserService _userService;
 
-        public AuthService(IConfiguration config, IUserService userService)
+        public AuthService(IConfiguration config)
         {
             _config = config;
-            _userService = userService;
         }
 
-        public async Task<ResponseLogin> GenerateToken(RequestLogin user)
+        public async Task<ResponseLogin> GenerateToken(RegisterLogin user)
         {
             if (user != null)
             {
-                var result = await _userService.GetByLogin(user.Login);
+                var model = new User()
+                {
+                    Name = user.Name,
+                    Email = user.Email,
+                    Login = user.Login,
+                    Password = user.Password,
+                    Role = user.Role.ToLower(),
+                };
 
                 var permissions = new List<int>();
 
-                if (result.Role == "user")
+                if (model.Role == "user")
                 {
-                    permissions = new List<int>() { 2, 3, 6 };
+                    permissions = new List<int>() { 2, 3 };
                 }
-                else if (result.Role == "chef")
+                else if (model.Role == "chef")
                 {
                     permissions = new List<int>() { 1, 2, 3, 4, 5 };
                 }
-                else if (result.Role == "admin")
+                else if (model.Role == "admin")
                 {
                     permissions = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
                 }
@@ -46,9 +52,9 @@ namespace RecipeManagement.Application.Services.AuthServices
 
                 List<Claim> claims = new List<Claim>()
                 {
-                    new Claim(ClaimTypes.Role, result.Role),
-                    new Claim("Login", user.Login),
-                    new Claim("UserID", result.Id.ToString()),
+                    new Claim(ClaimTypes.Role, model.Role),
+                    new Claim("Login", model.Login),
+                    new Claim("UserID", model.Id.ToString()),
                     new Claim("CreatedDate", DateTime.UtcNow.ToString()),
                     new Claim("Permissions", jsonContent),
                 };

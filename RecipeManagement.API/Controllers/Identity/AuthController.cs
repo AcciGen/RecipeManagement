@@ -16,11 +16,16 @@ namespace RecipeManagement.API.Controllers.Identity
         }
 
         [HttpPost]
-        public async Task<ActionResult<ResponseLogin>> Login(RequestLogin model)
+        public async Task<ActionResult<ResponseLogin>> Login(RegisterLogin model)
         {
-            var result = await _authService.GenerateToken(model);
+            if (model.Password == model.ConfirmPassword)
+            {
+                var result = await _authService.GenerateToken(model);
 
-            return Ok(result);
+                return Ok(result);
+            }
+
+            return BadRequest("Passwords are not the same...");
         }
     }
 }
