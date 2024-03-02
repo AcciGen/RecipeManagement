@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34622.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeManagement.API", "RecipeManagement.API\RecipeManagement.API.csproj", "{2A90B149-469A-4470-AA57-49427E5834B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeManagement.Domain", "RecipeManagement.Domain\RecipeManagement.Domain.csproj", "{514581F8-A62A-4302-8839-D7970B337639}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2A90B149-469A-4470-AA57-49427E5834B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A90B149-469A-4470-AA57-49427E5834B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A90B149-469A-4470-AA57-49427E5834B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A90B149-469A-4470-AA57-49427E5834B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{514581F8-A62A-4302-8839-D7970B337639}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{514581F8-A62A-4302-8839-D7970B337639}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{514581F8-A62A-4302-8839-D7970B337639}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{514581F8-A62A-4302-8839-D7970B337639}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {26628DDE-239F-4559-811C-63BD073E077D}
+	EndGlobalSection
+EndGlobal
