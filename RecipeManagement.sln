@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeManagement.API", "Rec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeManagement.Domain", "RecipeManagement.Domain\RecipeManagement.Domain.csproj", "{514581F8-A62A-4302-8839-D7970B337639}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeManagement.Infrastructure", "RecipeManagement.Infrastructure\RecipeManagement.Infrastructure.csproj", "{9DFEED4E-8CF6-44F2-A2AC-15233C0424EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeManagement.Application", "RecipeManagement.Application\RecipeManagement.Application.csproj", "{310954AD-2548-49EB-971E-93523515776B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{514581F8-A62A-4302-8839-D7970B337639}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{514581F8-A62A-4302-8839-D7970B337639}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{514581F8-A62A-4302-8839-D7970B337639}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DFEED4E-8CF6-44F2-A2AC-15233C0424EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DFEED4E-8CF6-44F2-A2AC-15233C0424EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DFEED4E-8CF6-44F2-A2AC-15233C0424EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DFEED4E-8CF6-44F2-A2AC-15233C0424EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{310954AD-2548-49EB-971E-93523515776B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{310954AD-2548-49EB-971E-93523515776B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{310954AD-2548-49EB-971E-93523515776B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{310954AD-2548-49EB-971E-93523515776B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

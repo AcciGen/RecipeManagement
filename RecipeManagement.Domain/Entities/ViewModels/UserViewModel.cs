@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RecipeManagement.Domain.Entities.ViewModels
+﻿namespace RecipeManagement.Domain.Entities.ViewModels
 {
     public class UserViewModel
     {
