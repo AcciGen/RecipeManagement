@@ -12,7 +12,6 @@ namespace RecipeManagement.Domain.Entities.Models
         public required List<string> Ingredients { get; set; }
         public required List<string> Instructions { get; set; }
         public required Level DifficultyLevel { get; set; }
-        public required List<string> Tags { get; set; }
 
         [MaxLength(40)]
         public required string Author { get; set; }

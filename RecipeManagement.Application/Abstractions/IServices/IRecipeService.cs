@@ -9,7 +9,6 @@ namespace RecipeManagement.Application.Abstractions.IServices
         public Task<Recipe> Create(RecipeDTO recipeDTO);
         public Task<IEnumerable<Recipe>> GetAll();
         public Task<Recipe> GetById(int id);
-        public Task<Recipe> GetByTag(string tag);
         public Task<Recipe> Update(int id, RecipeDTO recipeDTO);
         public Task<bool> Delete(Expression<Func<Recipe, bool>> expression);
     }

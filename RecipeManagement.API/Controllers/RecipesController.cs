@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RecipeManagement.API.Attributes;
 using RecipeManagement.Application.Abstractions.IServices;
 using RecipeManagement.Domain.Entities.DTOs;
+using RecipeManagement.Domain.Entities.Enums;
 using RecipeManagement.Domain.Entities.Models;
 using RecipeManagement.Domain.Entities.ViewModels;
 
@@ -20,6 +22,7 @@ namespace RecipeManagement.API.Controllers
         }
 
         [HttpPost]
+        [IdentityFilter(Permission.CreateRecipe)]
         public async Task<ActionResult<Recipe>> CreateRecipe(RecipeDTO model)
         {
             var result = await _recipeService.Create(model);
@@ -28,6 +31,7 @@ namespace RecipeManagement.API.Controllers
         }
 
         [HttpGet]
+        [IdentityFilter(Permission.GetAllRecipes)]
         public async Task<ActionResult<IEnumerable<Recipe>>> GetAllRecipes()
         {
             var result = await _recipeService.GetAll();
@@ -36,6 +40,7 @@ namespace RecipeManagement.API.Controllers
         }
 
         [HttpGet]
+        [IdentityFilter(Permission.GetRecipeById)]
         public async Task<ActionResult<Recipe>> GetRecipeById(int id)
         {
             var result = await _recipeService.GetById(id);
@@ -43,15 +48,8 @@ namespace RecipeManagement.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet]
-        public async Task<ActionResult<Recipe>> GetRecipeByTag(string tag)
-        {
-            var result = await _recipeService.GetByTag(tag);
-
-            return Ok(result);
-        }
-
         [HttpPut]
+        [IdentityFilter(Permission.UpdateRecipe)]
         public async Task<ActionResult<Recipe>> UpdateRecipe(int id, RecipeDTO model)
         {
             var result = await _recipeService.Update(id, model);
@@ -60,6 +58,7 @@ namespace RecipeManagement.API.Controllers
         }
 
         [HttpDelete]
+        [IdentityFilter(Permission.DeleteRecipe)]
         public async Task<ActionResult<string>> DeleteRecipe(int id)
         {
             var result = await _recipeService.Delete(x => x.Id == id);

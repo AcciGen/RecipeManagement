@@ -24,7 +24,6 @@ namespace RecipeManagement.Application.Services.RecipeServices
                 Ingredients = recipeDTO.Ingredients,
                 Instructions = recipeDTO.Instructions,
                 DifficultyLevel = recipeDTO.DifficultyLevel,
-                Tags = recipeDTO.Tags,
                 Author = recipeDTO.Author,
                 Rating = recipeDTO.Rating
             };
@@ -45,16 +44,6 @@ namespace RecipeManagement.Application.Services.RecipeServices
             return result;
         }
 
-        public async Task<Recipe> GetByTag(string tag)
-        {
-            var all = await _recipeRepository.GetAll();
-            foreach(var tags in all.SelectMany(x => x.Tags))
-            {
-                Console.WriteLine(tags);
-            }
-            return null!;
-        }
-
         public async Task<Recipe> Update(int id, RecipeDTO recipeDTO)
         {
             var res = await _recipeRepository.GetByAny(x => x.Id == id);
@@ -67,7 +56,6 @@ namespace RecipeManagement.Application.Services.RecipeServices
                     Ingredients = recipeDTO.Ingredients,
                     Instructions = recipeDTO.Instructions,
                     DifficultyLevel = recipeDTO.DifficultyLevel,
-                    Tags = recipeDTO.Tags,
                     Author = recipeDTO.Author,
                     Rating = recipeDTO.Rating
                 };

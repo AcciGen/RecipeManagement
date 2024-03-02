@@ -18,7 +18,6 @@ namespace RecipeManagement.Infrastructure
 
             services.AddScoped<IRecipeRepository, RecipeRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
-            //services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();
 
             return services;
         }

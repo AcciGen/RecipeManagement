@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 
 namespace RecipeManagement.Application.Services.AuthServices
 {
@@ -22,9 +23,26 @@ namespace RecipeManagement.Application.Services.AuthServices
 
         public async Task<ResponseLogin> GenerateToken(RequestLogin user)
         {
-            if (await UserExist(user))
+            if (user != null)
             {
                 var result = await _userService.GetByLogin(user.Login);
+
+                var permissions = new List<int>();
+
+                if (result.Role == "user")
+                {
+                    permissions = new List<int>() { 2, 3, 6 };
+                }
+                else if (result.Role == "chef")
+                {
+                    permissions = new List<int>() { 1, 2, 3, 4, 5 };
+                }
+                else if (result.Role == "admin")
+                {
+                    permissions = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+                }
+
+                var jsonContent = JsonSerializer.Serialize(permissions);
 
                 List<Claim> claims = new List<Claim>()
                 {
@@ -32,6 +50,7 @@ namespace RecipeManagement.Application.Services.AuthServices
                     new Claim("Login", user.Login),
                     new Claim("UserID", result.Id.ToString()),
                     new Claim("CreatedDate", DateTime.UtcNow.ToString()),
+                    new Claim("Permissions", jsonContent),
                 };
 
                 return await GenerateToken(claims);
@@ -71,18 +90,6 @@ namespace RecipeManagement.Application.Services.AuthServices
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(token)
             };
-        }
-
-        public async Task<bool> UserExist(RequestLogin user)
-        {
-            var result = await _userService.GetByLogin(user.Login);
-
-            if (user.Login == result.Login && user.Password == result.Password)
-            {
-                return true;
-            }
-
-            return false;
         }
     }
 }
