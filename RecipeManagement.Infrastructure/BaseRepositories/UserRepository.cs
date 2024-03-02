@@ -4,9 +4,9 @@ using RecipeManagement.Infrastructure.Persistance;
 
 namespace RecipeManagement.Infrastructure.BaseRepositories
 {
-    public class RecipeRepository : BaseRepository<Recipe>, IRecipeRepository
+    public class UserRepository : BaseRepository<User>, IUserRepository
     {
-        public RecipeRepository(RecipeManagementDbContext context) : base(context)
+        public UserRepository(RecipeManagementDbContext context) : base(context)
         {
         }
     }

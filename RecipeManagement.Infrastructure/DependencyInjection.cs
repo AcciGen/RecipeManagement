@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RecipeManagement.Application.Abstractions;
 using RecipeManagement.Infrastructure.BaseRepositories;
 using RecipeManagement.Infrastructure.Persistance;
 
@@ -15,9 +16,10 @@ namespace RecipeManagement.Infrastructure
                 options.UseNpgsql(config.GetConnectionString("DefaultConnection"));
             });
 
-
             services.AddScoped<IRecipeRepository, RecipeRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             //services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();
+
             return services;
         }
     }

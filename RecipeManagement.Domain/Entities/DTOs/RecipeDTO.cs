@@ -1,12 +1,10 @@
 ﻿using RecipeManagement.Domain.Entities.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace RecipeManagement.Domain.Entities.Models
+namespace RecipeManagement.Domain.Entities.DTOs
 {
-    public class Recipe
+    public class RecipeDTO
     {
-        public int Id { get; set; }
-
         [MaxLength(80)]
         public required string Title { get; set; }
         public required List<string> Ingredients { get; set; }
@@ -17,6 +15,5 @@ namespace RecipeManagement.Domain.Entities.Models
         [MaxLength(40)]
         public required string Author { get; set; }
         public required short Rating { get; set; }
-
     }
 }

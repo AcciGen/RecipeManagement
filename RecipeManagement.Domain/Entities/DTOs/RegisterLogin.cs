@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RecipeManagement.Domain.Entities.Models
+namespace RecipeManagement.Domain.Entities.DTOs
 {
-    public class User
+    public class RegisterLogin
     {
-        public int Id { get; set; }
-
         [MaxLength(40)]
         public required string? Name { get; set; }
 
@@ -18,7 +16,7 @@ namespace RecipeManagement.Domain.Entities.Models
         [MinLength(8)]
         public required string Password { get; set; }
 
-        [MaxLength(20)]
-        public required string Role { get; set; }
+        [MinLength(8)]
+        public required string ConiformPassword { get; set; }
     }
 }

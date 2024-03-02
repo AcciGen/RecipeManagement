@@ -11,6 +11,7 @@ namespace RecipeManagement.Infrastructure.Persistance
             Database.Migrate();
         }
 
+        public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Recipe> Recipes { get; set; }
     }
 }

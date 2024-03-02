@@ -2,7 +2,7 @@
 
 namespace RecipeManagement.Application.Abstractions
 {
-    public interface IRecipeRepository : IBaseRepository<Recipe>
+    public interface IUserRepository : IBaseRepository<User>
     {
     }
 }
