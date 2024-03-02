@@ -43,10 +43,6 @@ namespace RecipeManagement.Application.Services.AuthServices
                 {
                     permissions = new List<int>() { 1, 2, 3, 4, 5 };
                 }
-                else if (model.Role == "admin")
-                {
-                    permissions = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-                }
 
                 var jsonContent = JsonSerializer.Serialize(permissions);
 
