@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.Json;
-using RecipeManagement.Application.Abstractions;
+﻿using RecipeManagement.Application.Abstractions;
 using RecipeManagement.Application.Abstractions.IServices;
 using RecipeManagement.Domain.Entities.DTOs;
 using RecipeManagement.Domain.Entities.Models;
@@ -27,8 +26,8 @@ namespace RecipeManagement.Application.Services.RecipeServices
                 Author = recipeDTO.Author,
                 Rating = recipeDTO.Rating
             };
-            var result = await _recipeRepository.Create(recipe);
 
+            var result = await _recipeRepository.Create(recipe);
             return result;
         }
 

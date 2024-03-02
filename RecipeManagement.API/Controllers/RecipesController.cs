@@ -5,7 +5,6 @@ using RecipeManagement.Application.Abstractions.IServices;
 using RecipeManagement.Domain.Entities.DTOs;
 using RecipeManagement.Domain.Entities.Enums;
 using RecipeManagement.Domain.Entities.Models;
-using RecipeManagement.Domain.Entities.ViewModels;
 
 namespace RecipeManagement.API.Controllers
 {
@@ -25,6 +24,17 @@ namespace RecipeManagement.API.Controllers
         [IdentityFilter(Permission.CreateRecipe)]
         public async Task<ActionResult<Recipe>> CreateRecipe(RecipeDTO model)
         {
+            if (model.Rating < 1 && model.Rating > 5)
+            {
+                return BadRequest("Rating must be from 1 to 5");
+            }
+
+            else if (model.DifficultyLevel != Level.Easy && model.DifficultyLevel != Level.Medium && model.DifficultyLevel != Level.Difficult
+                && model.DifficultyLevel != Level.Advanced && model.DifficultyLevel != Level.Expert)
+            {
+                return BadRequest("Difficulty Level has only Easy, Medium, Difficult, Advanced, Expert Levels");
+            }
+
             var result = await _recipeService.Create(model);
 
             return Ok(result);
@@ -52,6 +62,17 @@ namespace RecipeManagement.API.Controllers
         [IdentityFilter(Permission.UpdateRecipe)]
         public async Task<ActionResult<Recipe>> UpdateRecipe(int id, RecipeDTO model)
         {
+            if (model.Rating < 1 && model.Rating > 5)
+            {
+                return BadRequest("Rating must be from 1 to 5");
+            }
+
+            else if (model.DifficultyLevel != Level.Easy && model.DifficultyLevel != Level.Medium && model.DifficultyLevel != Level.Difficult
+                && model.DifficultyLevel != Level.Advanced && model.DifficultyLevel != Level.Expert)
+            {
+                return BadRequest("Difficulty Level has only Easy, Medium, Difficult, Advanced, Expert Levels");
+            }
+
             var result = await _recipeService.Update(id, model);
 
             return Ok(result);

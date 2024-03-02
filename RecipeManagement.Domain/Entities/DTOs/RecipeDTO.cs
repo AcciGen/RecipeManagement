@@ -13,6 +13,6 @@ namespace RecipeManagement.Domain.Entities.DTOs
 
         [MaxLength(40)]
         public required string Author { get; set; }
-        public required short Rating { get; set; }
+        public required float Rating { get; set; }
     }
 }
