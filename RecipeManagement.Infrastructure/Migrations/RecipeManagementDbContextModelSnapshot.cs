@@ -46,6 +46,10 @@ namespace RecipeManagement.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text[]");
 
+                    b.Property<string>("InstructionsPath")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<float>("Rating")
                         .HasColumnType("real");
 

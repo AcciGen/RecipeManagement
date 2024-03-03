@@ -21,6 +21,7 @@ namespace RecipeManagement.Infrastructure.Migrations
                     Title = table.Column<string>(type: "character varying(80)", maxLength: 80, nullable: false),
                     Ingredients = table.Column<List<string>>(type: "text[]", nullable: false),
                     Instructions = table.Column<List<string>>(type: "text[]", nullable: false),
+                    InstructionsPath = table.Column<string>(type: "text", nullable: false),
                     DifficultyLevel = table.Column<int>(type: "integer", nullable: false),
                     Author = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
                     Rating = table.Column<float>(type: "real", nullable: false)

@@ -20,4 +20,8 @@
     <ProjectReference Include="..\RecipeManagement.Infrastructure\RecipeManagement.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\RecipeInstructions\" />
+  </ItemGroup>
+
 </Project>

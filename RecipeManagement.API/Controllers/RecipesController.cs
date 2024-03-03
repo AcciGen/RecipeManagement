@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RecipeManagement.API.Attributes;
+using RecipeManagement.API.ExternalServices;
 using RecipeManagement.Application.Abstractions.IServices;
 using RecipeManagement.Domain.Entities.DTOs;
 using RecipeManagement.Domain.Entities.Enums;
@@ -14,28 +15,28 @@ namespace RecipeManagement.API.Controllers
     public class RecipesController : ControllerBase
     {
         private readonly IRecipeService _recipeService;
+        private readonly IWebHostEnvironment _env;
 
-        public RecipesController(IRecipeService recipeService)
+        public RecipesController(IRecipeService recipeService, IWebHostEnvironment env)
         {
             _recipeService = recipeService;
+            _env = env;
         }
 
         [HttpPost]
         [IdentityFilter(Permission.CreateRecipe)]
-        public async Task<ActionResult<Recipe>> CreateRecipe(RecipeDTO model)
+        public async Task<ActionResult<Recipe>> CreateRecipe([FromForm] RecipeDTO model, IFormFile InstructionsFile)
         {
             if (model.Rating < 1 && model.Rating > 5)
             {
                 return BadRequest("Rating must be from 1 to 5");
             }
 
-            else if (model.DifficultyLevel != Level.Easy && model.DifficultyLevel != Level.Medium && model.DifficultyLevel != Level.Difficult
-                && model.DifficultyLevel != Level.Advanced && model.DifficultyLevel != Level.Expert)
-            {
-                return BadRequest("Difficulty Level has only Easy, Medium, Difficult, Advanced, Expert Levels");
-            }
+            PictureExternalService service = new PictureExternalService(_env);
 
-            var result = await _recipeService.Create(model);
+            string picturePath = await service.AddPictureAndGetPath(InstructionsFile);
+
+            var result = await _recipeService.Create(model, picturePath);
 
             return Ok(result);
         }
@@ -60,20 +61,18 @@ namespace RecipeManagement.API.Controllers
 
         [HttpPut]
         [IdentityFilter(Permission.UpdateRecipe)]
-        public async Task<ActionResult<Recipe>> UpdateRecipe(int id, RecipeDTO model)
+        public async Task<ActionResult<Recipe>> UpdateRecipe([FromForm] int id, RecipeDTO model, IFormFile InstructionsFile)
         {
             if (model.Rating < 1 && model.Rating > 5)
             {
                 return BadRequest("Rating must be from 1 to 5");
             }
 
-            else if (model.DifficultyLevel != Level.Easy && model.DifficultyLevel != Level.Medium && model.DifficultyLevel != Level.Difficult
-                && model.DifficultyLevel != Level.Advanced && model.DifficultyLevel != Level.Expert)
-            {
-                return BadRequest("Difficulty Level has only Easy, Medium, Difficult, Advanced, Expert Levels");
-            }
+            PictureExternalService service = new PictureExternalService(_env);
 
-            var result = await _recipeService.Update(id, model);
+            string picturePath = await service.AddPictureAndGetPath(InstructionsFile);
+
+            var result = await _recipeService.Update(id, model, picturePath);
 
             return Ok(result);
         }

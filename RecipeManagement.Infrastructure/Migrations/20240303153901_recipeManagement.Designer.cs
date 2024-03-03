@@ -12,7 +12,7 @@ using RecipeManagement.Infrastructure.Persistance;
 namespace RecipeManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(RecipeManagementDbContext))]
-    [Migration("20240303070555_recipeManagement")]
+    [Migration("20240303153901_recipeManagement")]
     partial class recipeManagement
     {
         /// <inheritdoc />
@@ -48,6 +48,10 @@ namespace RecipeManagement.Infrastructure.Migrations
                     b.Property<List<string>>("Instructions")
                         .IsRequired()
                         .HasColumnType("text[]");
+
+                    b.Property<string>("InstructionsPath")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<float>("Rating")
                         .HasColumnType("real");

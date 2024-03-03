@@ -15,13 +15,14 @@ namespace RecipeManagement.Application.Services.RecipeServices
             _recipeRepository = recipeRepository;
         }
 
-        public async Task<Recipe> Create(RecipeDTO recipeDTO)
+        public async Task<Recipe> Create(RecipeDTO recipeDTO, string instructionsPath)
         {
             var recipe = new Recipe()
             {
                 Title = recipeDTO.Title,
                 Ingredients = recipeDTO.Ingredients,
                 Instructions = recipeDTO.Instructions,
+                InstructionsPath = instructionsPath,
                 DifficultyLevel = recipeDTO.DifficultyLevel,
                 Author = recipeDTO.Author,
                 Rating = recipeDTO.Rating
@@ -43,7 +44,7 @@ namespace RecipeManagement.Application.Services.RecipeServices
             return result;
         }
 
-        public async Task<Recipe> Update(int id, RecipeDTO recipeDTO)
+        public async Task<Recipe> Update(int id, RecipeDTO recipeDTO, string instructionsPath)
         {
             var storedRecipe = await _recipeRepository.GetByAny(x => x.Id == id);
 
@@ -52,6 +53,7 @@ namespace RecipeManagement.Application.Services.RecipeServices
                 storedRecipe.Title = recipeDTO.Title;
                 storedRecipe.Ingredients = recipeDTO.Ingredients;
                 storedRecipe.Instructions = recipeDTO.Instructions;
+                storedRecipe.InstructionsPath = instructionsPath;
                 storedRecipe.DifficultyLevel = recipeDTO.DifficultyLevel;
                 storedRecipe.Author = recipeDTO.Author;
                 storedRecipe.Rating = recipeDTO.Rating;
