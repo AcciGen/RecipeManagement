@@ -16,6 +16,7 @@ namespace RecipeManagement.Infrastructure
                 options.UseNpgsql(config.GetConnectionString("DefaultConnection"));
             });
 
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRecipeRepository, RecipeRepository>();
 
             return services;

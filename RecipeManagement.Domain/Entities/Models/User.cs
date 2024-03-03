@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace RecipeManagement.Domain.Entities.Models
 {
@@ -20,5 +21,8 @@ namespace RecipeManagement.Domain.Entities.Models
 
         [MaxLength(20)]
         public required string Role { get; set; }
+
+        [MaxLength(4)]
+        public string confirmationCode { get; set; }
     }
 }

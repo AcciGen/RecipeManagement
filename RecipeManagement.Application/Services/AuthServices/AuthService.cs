@@ -1,10 +1,13 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using RecipeManagement.Application.Abstractions;
 using RecipeManagement.Application.Abstractions.IServices;
 using RecipeManagement.Domain.Entities.DTOs;
 using RecipeManagement.Domain.Entities.Models;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
@@ -14,54 +17,116 @@ namespace RecipeManagement.Application.Services.AuthServices
     public class AuthService : IAuthService
     {
         private readonly IConfiguration _config;
-
-        public AuthService(IConfiguration config)
+        private readonly IUserRepository _userRepository;
+        public AuthService(IConfiguration config, IUserRepository userRepository)
         {
             _config = config;
+            _userRepository = userRepository;
         }
 
-        public async Task<ResponseLogin> GenerateToken(RegisterLogin user)
+        public async Task<string> SignUpAsync(RegisterLogin user)
         {
-            if (user != null)
+            Random random = new Random();
+            string code = random.Next(1000, 9999).ToString();
+
+            var storedEmail = await _userRepository.GetByAny(x => x.Email == user.Email);
+            var storedLogin = await _userRepository.GetByAny(x => x.Login == user.Login);
+
+            if (storedEmail != null)
             {
-                var model = new User()
-                {
-                    Name = user.Name,
-                    Email = user.Email,
-                    Login = user.Login,
-                    Password = user.Password,
-                    Role = user.Role.ToLower(),
-                };
-
-                var permissions = new List<int>();
-
-                if (model.Role == "user")
-                {
-                    permissions = new List<int>() { 2, 3 };
-                }
-                else if (model.Role == "chef")
-                {
-                    permissions = new List<int>() { 1, 2, 3, 4, 5 };
-                }
-
-                var jsonContent = JsonSerializer.Serialize(permissions);
-
-                List<Claim> claims = new List<Claim>()
-                {
-                    new Claim(ClaimTypes.Role, model.Role),
-                    new Claim("Login", model.Login),
-                    new Claim("UserID", model.Id.ToString()),
-                    new Claim("CreatedDate", DateTime.UtcNow.ToString()),
-                    new Claim("Permissions", jsonContent),
-                };
-
-                return await GenerateToken(claims);
+                return "You've already Signed Up!";
+            }
+            else if (storedLogin != null)
+            {
+                return "Please make unique Login!";
             }
 
-            return new ResponseLogin()
+            //Email Logic
+            var emailSettings = _config.GetSection("EmailSettings");
+            var mailMessage = new MailMessage
             {
-                Token = "Unauthorized"
+                From = new MailAddress(emailSettings["Sender"], emailSettings["SenderName"]),
+                Subject = "Unique Code",
+                Body = code,
+                IsBodyHtml = true,
+
             };
+            Console.WriteLine(user.Email);
+            Console.WriteLine(user.Email!.ToString());
+            mailMessage.To.Add(user.Email);
+
+            using var smtpClient = new SmtpClient(emailSettings["MailServer"], int.Parse(emailSettings["MailPort"]))
+            {
+                Port = Convert.ToInt32(emailSettings["MailPort"]),
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                Credentials = new NetworkCredential(emailSettings["Sender"], emailSettings["Password"]),
+                EnableSsl = true,
+            };
+
+            //smtpClient.UseDefaultCredentials = true;
+
+            await smtpClient.SendMailAsync(mailMessage);
+            //
+
+            var newUser = new User()
+            {
+                Name = user.Name,
+                Email = user.Email,
+                Login = user.Login,
+                Password = user.Password,
+                Role = user.Role.ToLower(),
+                confirmationCode = code
+            };
+
+            await _userRepository.Create(newUser);
+
+            return "We've sent the code to your email! Please enter the code in the next label to login on our website...";
+        }
+
+        public async Task<ResponseLogin> LogInAsync(RequestLogin user)
+        {
+            var model = await _userRepository.GetByAny(x => x.Login == user.Login);
+
+            if (model == null)
+            {
+                return new ResponseLogin()
+                {
+                    Token = "Please Sign Up first!"
+                };
+            }
+
+            else if (model.Password != user.Password || model.confirmationCode != user.confirmationCode)
+            {
+                return new ResponseLogin()
+                {
+                    Token = "Something is incorrect!"
+                };
+            }
+
+            var permissions = new List<int>();
+
+            if (model.Role == "user")
+            {
+                permissions = new List<int>() { 2, 3 };
+            }
+
+            else if (model.Role == "chef")
+            {
+                permissions = new List<int>() { 1, 2, 3, 4, 5 };
+            }
+
+            var jsonContent = JsonSerializer.Serialize(permissions);
+
+            List<Claim> claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Role, model.Role),
+                new Claim("Login", model.Login),
+                new Claim("UserID", model.Id.ToString()),
+                new Claim("CreatedDate", DateTime.UtcNow.ToString()),
+                new Claim("Permissions", jsonContent),
+            };
+
+            return await GenerateToken(claims);
         }
 
         public async Task<ResponseLogin> GenerateToken(IEnumerable<Claim> additionalClaims)
@@ -93,5 +158,6 @@ namespace RecipeManagement.Application.Services.AuthServices
                 Token = new JwtSecurityTokenHandler().WriteToken(token)
             };
         }
+
     }
 }

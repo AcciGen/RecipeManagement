@@ -4,6 +4,7 @@ namespace RecipeManagement.Application.Abstractions.IServices
 {
     public interface IAuthService
     {
-        public Task<ResponseLogin> GenerateToken(RegisterLogin user);
+        public Task<string> SignUpAsync(RegisterLogin user);
+        public Task<ResponseLogin> LogInAsync(RequestLogin user);
     }
 }

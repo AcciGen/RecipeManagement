@@ -18,5 +18,8 @@ namespace RecipeManagement.Domain.Entities.DTOs
 
         [MaxLength(20)]
         public required string Role { get; set; }
+
+        [MaxLength(4)]
+        public string confirmationCode { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using RecipeManagement.Domain.Entities.DTOs;
 
 namespace RecipeManagement.API.Controllers.Identity
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -16,16 +16,24 @@ namespace RecipeManagement.API.Controllers.Identity
         }
 
         [HttpPost]
-        public async Task<ActionResult<ResponseLogin>> Login(RegisterLogin model)
+        public async Task<ActionResult<string>> SignUp(RegisterLogin user)
         {
-            if (model.Password == model.ConfirmPassword)
+            if (user.Password != user.confirmPassword)
             {
-                var result = await _authService.GenerateToken(model);
-
-                return Ok(result);
+                return BadRequest("Passwords are not the same!");
             }
 
-            return BadRequest("Passwords are not the same...");
+            var result = await _authService.SignUpAsync(user);
+            
+            return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ResponseLogin>> Login(RequestLogin model)
+        {
+            var result = await _authService.LogInAsync(model);
+
+            return Ok(result);
         }
     }
 }
