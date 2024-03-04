@@ -5,10 +5,10 @@ namespace RecipeManagement.Domain.Entities.DTOs
     public class UserDTO
     {
         [MaxLength(40)]
-        public required string? Name { get; set; }
+        public required string Name { get; set; }
 
         [EmailAddress]
-        public required string? Email { get; set; }
+        public required string Email { get; set; }
 
         [MaxLength(40)]
         public required string Login { get; set; }
@@ -19,7 +19,7 @@ namespace RecipeManagement.Domain.Entities.DTOs
         [MaxLength(20)]
         public required string Role { get; set; }
 
-        [MaxLength(4)]
-        public string confirmationCode { get; set; }
+        [MaxLength(5)]
+        public string? confirmationCode { get; set; }
     }
 }

@@ -9,8 +9,5 @@ namespace RecipeManagement.Domain.Entities.DTOs
 
         [MinLength(8)]
         public required string Password { get; set; }
-
-        [MaxLength(4)]
-        public required string confirmationCode { get; set;}
     }
 }

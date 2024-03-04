@@ -26,9 +26,6 @@ namespace RecipeManagement.Application.Services.AuthServices
 
         public async Task<string> SignUpAsync(RegisterLogin user)
         {
-            Random random = new Random();
-            string code = random.Next(1000, 9999).ToString();
-
             var storedEmail = await _userRepository.GetByAny(x => x.Email == user.Email);
             var storedLogin = await _userRepository.GetByAny(x => x.Login == user.Login);
 
@@ -41,6 +38,40 @@ namespace RecipeManagement.Application.Services.AuthServices
                 return "Please make unique Login!";
             }
 
+            var newUser = new User()
+            {
+                Name = user.Name!,
+                Email = user.Email!,
+                Login = user.Login,
+                Password = user.Password,
+                Role = user.Role.ToLower(),
+            };
+
+            await _userRepository.Create(newUser);
+
+            return "You've Signed Up successfully! Please Login to get start!";
+        }
+
+        public async Task<string> LogInAsync(RequestLogin user)
+        {
+            var model = await _userRepository.GetByAny(x => x.Login == user.Login);
+
+            if (model == null)
+            {
+                return "Please Sign Up first!";
+            }
+
+            else if (model.Password != user.Password)
+            {
+                return "Something is incorrect!";
+            }
+
+            Random random = new Random();
+            string code = random.Next(10000, 99999).ToString();
+            model.confirmationCode = code;
+
+            await _userRepository.Update(model);
+
             //Email Logic
             var emailSettings = _config.GetSection("EmailSettings");
             var mailMessage = new MailMessage
@@ -51,9 +82,7 @@ namespace RecipeManagement.Application.Services.AuthServices
                 IsBodyHtml = true,
 
             };
-            Console.WriteLine(user.Email);
-            Console.WriteLine(user.Email!.ToString());
-            mailMessage.To.Add(user.Email);
+            mailMessage.To.Add(model.Email);
 
             using var smtpClient = new SmtpClient(emailSettings["MailServer"], int.Parse(emailSettings["MailPort"]))
             {
@@ -62,28 +91,13 @@ namespace RecipeManagement.Application.Services.AuthServices
                 Credentials = new NetworkCredential(emailSettings["Sender"], emailSettings["Password"]),
                 EnableSsl = true,
             };
-
-            //smtpClient.UseDefaultCredentials = true;
-
             await smtpClient.SendMailAsync(mailMessage);
             //
-
-            var newUser = new User()
-            {
-                Name = user.Name,
-                Email = user.Email,
-                Login = user.Login,
-                Password = user.Password,
-                Role = user.Role.ToLower(),
-                confirmationCode = code
-            };
-
-            await _userRepository.Create(newUser);
 
             return "We've sent the code to your email! Please enter the code in the next label to login on our website...";
         }
 
-        public async Task<ResponseLogin> LogInAsync(RequestLogin user)
+        public async Task<ResponseLogin> Verification(RequestLogin user, string code)
         {
             var model = await _userRepository.GetByAny(x => x.Login == user.Login);
 
@@ -95,7 +109,7 @@ namespace RecipeManagement.Application.Services.AuthServices
                 };
             }
 
-            else if (model.Password != user.Password || model.confirmationCode != user.confirmationCode)
+            else if (model.Password != user.Password || model.confirmationCode != code)
             {
                 return new ResponseLogin()
                 {

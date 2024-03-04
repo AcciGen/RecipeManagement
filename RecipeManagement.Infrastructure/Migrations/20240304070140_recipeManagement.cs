@@ -37,12 +37,12 @@ namespace RecipeManagement.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true),
-                    Email = table.Column<string>(type: "text", nullable: true),
+                    Name = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
                     Login = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
                     Password = table.Column<string>(type: "text", nullable: false),
                     Role = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    confirmationCode = table.Column<string>(type: "character varying(4)", maxLength: 4, nullable: false)
+                    confirmationCode = table.Column<string>(type: "character varying(5)", maxLength: 5, nullable: true)
                 },
                 constraints: table =>
                 {

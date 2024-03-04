@@ -12,7 +12,7 @@ using RecipeManagement.Infrastructure.Persistance;
 namespace RecipeManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(RecipeManagementDbContext))]
-    [Migration("20240303153901_recipeManagement")]
+    [Migration("20240304070140_recipeManagement")]
     partial class recipeManagement
     {
         /// <inheritdoc />
@@ -75,6 +75,7 @@ namespace RecipeManagement.Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Login")
@@ -83,6 +84,7 @@ namespace RecipeManagement.Infrastructure.Migrations
                         .HasColumnType("character varying(40)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)");
 
@@ -96,9 +98,8 @@ namespace RecipeManagement.Infrastructure.Migrations
                         .HasColumnType("character varying(20)");
 
                     b.Property<string>("confirmationCode")
-                        .IsRequired()
-                        .HasMaxLength(4)
-                        .HasColumnType("character varying(4)");
+                        .HasMaxLength(5)
+                        .HasColumnType("character varying(5)");
 
                     b.HasKey("Id");
 
