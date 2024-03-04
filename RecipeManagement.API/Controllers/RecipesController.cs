@@ -25,7 +25,7 @@ namespace RecipeManagement.API.Controllers
 
         [HttpPost]
         [IdentityFilter(Permission.CreateRecipe)]
-        public async Task<ActionResult<Recipe>> CreateRecipe([FromForm] RecipeDTO model, IFormFile InstructionsFile)
+        public async Task<ActionResult<Recipe>> CreateRecipe([FromForm] RecipeDTO model, IFormFile InstructionsPath)
         {
             if (model.Rating < 1 && model.Rating > 5)
             {
@@ -34,7 +34,7 @@ namespace RecipeManagement.API.Controllers
 
             FileExternalService service = new FileExternalService(_env);
 
-            string picturePath = await service.AddFileAndGetPath(InstructionsFile);
+            string picturePath = await service.AddFileAndGetPath(InstructionsPath);
 
             var result = await _recipeService.Create(model, picturePath);
 
@@ -61,7 +61,7 @@ namespace RecipeManagement.API.Controllers
 
         [HttpPut]
         [IdentityFilter(Permission.UpdateRecipe)]
-        public async Task<ActionResult<Recipe>> UpdateRecipe([FromForm] int id, RecipeDTO model, IFormFile InstructionsFile)
+        public async Task<ActionResult<Recipe>> UpdateRecipe(int id, RecipeDTO model, IFormFile InstructionsFile)
         {
             if (model.Rating < 1 && model.Rating > 5)
             {
