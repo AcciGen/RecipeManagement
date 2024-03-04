@@ -14,6 +14,19 @@ namespace RecipeManagement.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  policy =>
+                                  {
+                                      policy.AllowAnyOrigin()
+                                      .AllowAnyHeader()
+                                      .AllowAnyMethod();
+                                  });
+            });
+
 
             builder.Services.AddControllers();
 
@@ -75,6 +88,8 @@ namespace RecipeManagement.API
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthentication();
 
