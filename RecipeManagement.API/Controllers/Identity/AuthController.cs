@@ -37,7 +37,7 @@ namespace RecipeManagement.API.Controllers.Identity
         }
 
         [HttpPost]
-        public async Task<ActionResult<ResponseLogin>> Verification(RequestLogin model, string verificationCode)
+        public async Task<ActionResult<ResponseLogin>> Verification([FromForm] RequestLogin model, string verificationCode)
         {
             var result = await _authService.Verification(model, verificationCode);
 
