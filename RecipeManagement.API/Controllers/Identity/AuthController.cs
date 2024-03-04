@@ -16,7 +16,7 @@ namespace RecipeManagement.API.Controllers.Identity
         }
 
         [HttpPost]
-        public async Task<ActionResult<string>> SignUp(RegisterLogin user)
+        public async Task<ActionResult<string>> SignUp([FromForm] RegisterLogin user)
         {
             if (user.Password != user.confirmPassword)
             {
@@ -29,7 +29,7 @@ namespace RecipeManagement.API.Controllers.Identity
         }
 
         [HttpPost]
-        public async Task<ActionResult<string>> Login(RequestLogin model)
+        public async Task<ActionResult<string>> Login([FromForm] RequestLogin model)
         {
             var result = await _authService.LogInAsync(model);
 
