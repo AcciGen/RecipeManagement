@@ -32,9 +32,9 @@ namespace RecipeManagement.API.Controllers
                 return BadRequest("Rating must be from 1 to 5");
             }
 
-            PictureExternalService service = new PictureExternalService(_env);
+            FileExternalService service = new FileExternalService(_env);
 
-            string picturePath = await service.AddPictureAndGetPath(InstructionsFile);
+            string picturePath = await service.AddFileAndGetPath(InstructionsFile);
 
             var result = await _recipeService.Create(model, picturePath);
 
@@ -68,9 +68,9 @@ namespace RecipeManagement.API.Controllers
                 return BadRequest("Rating must be from 1 to 5");
             }
 
-            PictureExternalService service = new PictureExternalService(_env);
+            FileExternalService service = new FileExternalService(_env);
 
-            string picturePath = await service.AddPictureAndGetPath(InstructionsFile);
+            string picturePath = await service.AddFileAndGetPath(InstructionsFile);
 
             var result = await _recipeService.Update(id, model, picturePath);
 

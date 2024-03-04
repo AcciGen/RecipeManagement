@@ -1,15 +1,15 @@
 ﻿namespace RecipeManagement.API.ExternalServices
 {
-    public class PictureExternalService
+    public class FileExternalService
     {
         private readonly IWebHostEnvironment _env;
 
-        public PictureExternalService(IWebHostEnvironment env)
+        public FileExternalService(IWebHostEnvironment env)
         {
             _env = env;
         }
 
-        public async Task<string> AddPictureAndGetPath(IFormFile file)
+        public async Task<string> AddFileAndGetPath(IFormFile file)
         {
             string path = Path.Combine(_env.WebRootPath, "RecipeInstructions", Guid.NewGuid() + file.FileName);
 
