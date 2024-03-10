@@ -87,7 +87,8 @@ namespace RecipeManagement.API
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
+            app.UseForwardedHeaders();//NGINX
 
             app.UseCors(MyAllowSpecificOrigins);
 
