@@ -17,6 +17,7 @@ namespace RecipeManagement.Application.Tests.Services.UserServices
             // Arrange
             var mockRepository = new Mock<IRecipeRepository>();
             var recipeService = new RecipeService(mockRepository.Object);
+            
             var recipeDTO = new RecipeDTO()
             {
                 Title = "Test",
@@ -26,13 +27,27 @@ namespace RecipeManagement.Application.Tests.Services.UserServices
                 Author = "Test",
                 Rating = 5
             };
-            var instructionsPath = "path";
+            var instructionsPath = "path/test";
+
+            var recipe = new Recipe
+            {
+                Id = 1,
+                Title = "Test",
+                Ingredients = new List<string> { "Test" },
+                Instructions = new List<string> { "Test" },
+                InstructionsPath = instructionsPath,
+                DifficultyLevel = Level.Easy,
+                Author = "Test",
+                Rating = 5
+            };
+            mockRepository.Setup(repo => repo.GetByAny(It.IsAny<Expression<Func<Recipe, bool>>>())).ReturnsAsync(recipe);
 
             // Act
-            var createdRecipe = await recipeService.Create(recipeDTO, instructionsPath);
+            await recipeService.Create(recipeDTO, instructionsPath);
+            var result = await recipeService.GetById(1);
 
             // Assert
-            Assert.NotNull(createdRecipe);
+            Assert.NotNull(result);
         }
 
         [Fact]
@@ -120,8 +135,8 @@ namespace RecipeManagement.Application.Tests.Services.UserServices
                 Author = "Test",
                 Rating = 5
             };
-
             var instructionsPath = "path";
+            
             var storedRecipe = new Recipe()
             {
                 Id = 1,
@@ -136,10 +151,11 @@ namespace RecipeManagement.Application.Tests.Services.UserServices
             mockRepository.Setup(repo => repo.GetByAny(It.IsAny<Expression<Func<Recipe, bool>>>())).ReturnsAsync(storedRecipe);
 
             // Act
-            var result = await recipeService.Update(recipeId, recipeDTO, instructionsPath);
+            await recipeService.Update(recipeId, recipeDTO, instructionsPath);
+            var result = await recipeService.GetById(recipeId);
 
             // Assert
-            Assert.NotNull(result);
+            Assert.Equal(storedRecipe, result);
         }
 
         public static IEnumerable<object[]> DeleteTestData =>
