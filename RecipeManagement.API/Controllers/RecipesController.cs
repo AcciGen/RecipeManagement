@@ -69,7 +69,6 @@ namespace RecipeManagement.API.Controllers
             }
 
             FileExternalService service = new FileExternalService(_env);
-
             string picturePath = await service.AddFileAndGetPath(InstructionsFile);
 
             var result = await _recipeService.Update(id, model, picturePath);
